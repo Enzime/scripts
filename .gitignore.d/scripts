@@ -1,0 +1,16 @@
+*
+!/bin
+!/bin/b.miserable.ninja
+!/bin/clipup
+!/bin/file-chooser
+!/bin/fileup
+!/bin/firefox-profile-launcher
+!/bin/i3-workspace-switcher
+!/bin/kbdctl
+!/bin/puu.sh
+!/bin/ranger-file-selector
+!/bin/ranger-folder-selector
+!/bin/shotup
+!/bin/tt
+!/.gitignore.d
+!/.gitignore.d/scripts

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+file=$(file-chooser)
+: ${site:=b.miserable.ninja}
+regex='(https?|ftp)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'
+
+if [ -n "$file" ]; then
+	if [ -f $file ]; then
+		url=$($site $file -q)
+		if [[ "$url" =~ $regex ]]; then
+			echo $url | xclip -selection clipboard
+			echo $url
+			firefox $url
+		else
+			echo Failed to upload
+		fi
+	fi
+else
+	echo No file chosen
+fi

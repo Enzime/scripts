@@ -1,0 +1,7 @@
+#!/bin/bash
+
+profile=$(cat ~/.mozilla/firefox/profiles.ini | grep -A0 --no-group-separator Name= | sed 's/Name=//' | rofi -dmenu -p "profile: ")
+
+if [ -n "$profile" ]; then
+	firefox --new-instance -P "$profile"
+fi

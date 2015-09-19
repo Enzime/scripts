@@ -1,0 +1,20 @@
+#!/bin/bash
+
+API_KEY=""
+
+if [ -z "$1" ]
+then
+  echo "Specify a file to be uploaded"
+  exit 2
+elif ! [ -f "$1" -a -r "$1" ]
+then
+  echo "File '$1' is not valid (it is not a file or it is not readable)"
+  exit 3
+fi
+
+if [[ "$2" == "-q" ]]
+then
+	curl "http://b.miserable.ninja/up/" -# -F "api_key=$API_KEY" -F "q=q" -F "f=@$1"
+else
+	curl "http://b.miserable.ninja/up/" -# -F "api_key=$API_KEY" -F "q=q" -F "f=@$1" | sed -E 's/^.+,(.+),.+,.+$/\1\n/'
+fi

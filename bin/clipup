@@ -1,0 +1,26 @@
+#!/bin/bash
+
+clip=$(xclip -o -sel c)
+: $(site:=b.miserable.ninja)
+regex='(https?|ftp)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'
+echo $clip
+
+if [ -f "$clip" ]; then
+	# dialog to ask if you want to upload file
+	echo a
+else
+	temp=$(mktemp)
+	if [[ $clip =~ $regex ]]; then
+		# dialogue to ask if you want to upload a URL (as a text file)
+	fi
+
+	echo $clip > $temp
+	url=$($site $temp -q)
+
+	if [[ $url =~ $regex ]]; then
+		echo $url | xclip -selection clipboard
+		firefox $url
+	else
+		echo Failed to upload clipboard
+	fi
+fi

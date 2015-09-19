@@ -1,0 +1,10 @@
+#!/bin/bash
+
+line=$(cat $1)
+temp=$(mktemp)
+ranger --choosefile=$temp
+echo -n $line > $1
+if [[ "$(<$temp)" != "" ]]
+then
+	echo ' '$(printf "%q" "$(cat $temp)") >> $1
+fi

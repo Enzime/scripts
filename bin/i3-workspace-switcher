@@ -1,0 +1,58 @@
+#!/bin/python3
+# vim: tabstop=4 noexpandtab shiftwidth=4 softtabstop=0
+
+import json, string, subprocess, sys
+
+def usage(mode=False):
+	if not mode:
+		suffix = '([--direction] {prev, next} | --name name | --num number)'
+	elif mode == 'name':
+		suffix = '--name name'
+	elif mode == 'direction':
+		suffix = '[--direction] {prev, next}'
+	elif mode == 'num':
+		suffix = '--num number'
+
+	print("Usage: i3-workspace-switcher [-h] {}".format(suffix))
+	exit()
+
+args = sys.argv[1:]
+
+direction = ('prev', 'next')
+flags = ('--direction', '--name', '--num')
+
+if len(args) == 0 or '-h' in args or '--help' in args or len(args) > 2:
+	# print usage!
+	usage()
+elif len(args) == 1:
+	if args[0] not in direction + flags:
+		usage()
+	elif args[0] in flags:
+		usage(args[0][2:])
+	mode = 'direction'
+	arg = args[0]
+elif len(args) == 2:
+	if args[0] not in flags: 
+		usage()
+	elif args[0] == '--num' and any([char not in string.digits for char in set(args[1])]):
+		usage('num')
+	mode = args[0][2:]
+	arg = args[1]
+
+	if mode == 'num':
+		arg = int(arg) - 1
+
+i3out = subprocess.check_output(['i3-msg', '-t', 'get_workspaces'])
+workspaces = json.loads(i3out.decode("utf-8"))
+#i3out = subprocess.check_output(['i3-msg', '-t', 'get_tree'])
+#tree = json.loads(i3out.decode("utf-8"))
+
+if mode == 'name':
+	subprocess.call(['i3','workspace',arg])
+elif mode == 'num':
+	subprocess.call(['i3','workspace',workspaces[arg]['name']])
+else:
+	for num,workspace in enumerate(workspaces):
+		if workspace['visible']:
+			offset = -1 if arg == "prev" else 1 if num != len(workspaces) - 1 else -len(workspaces)+1
+			subprocess.call(['i3', 'workspace', workspaces[num + offset]['name']])

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+line=$(cat $1)
+temp=$(mktemp)
+ranger --choosedir=$temp
+echo -n $line > $1
+echo ' '$(printf "%q" "$(cat $temp)") >> $1

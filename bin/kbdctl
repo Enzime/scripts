@@ -1,0 +1,21 @@
+#!/bin/bash
+
+file="/sys/devices/platform/i8042/serio0/bind_mode"
+
+if [ -n "$1" ]; then
+	mode=$1
+else
+	mode=$(< $file)
+	if [ "$mode" == "manual" ]; then
+		mode="auto"
+	else
+		mode="manual"
+	fi
+fi
+
+if [ "$mode" == "m" -o "$mode" == "manual" ]; then
+	echo -n manual > $file
+	echo -n psmouse > /sys/devices/platform/i8042/serio0/drvctl
+elif [ "$mode" == "a" -o "$mode" == "auto" ]; then
+	echo -n auto > $file
+fi
