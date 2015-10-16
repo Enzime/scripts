@@ -5,8 +5,8 @@ file=$(file-chooser)
 regex='(https?|ftp)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'
 
 if [ -n "$file" ]; then
-	if [ -f $file ]; then
-		url=$($site $file -q)
+	if [ -f "$file" ]; then
+		url=$($site "$file" -q)
 		if [[ "$url" =~ $regex ]]; then
 			echo $url | xclip -selection clipboard
 			echo $url

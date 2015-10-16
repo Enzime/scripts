@@ -1,44 +1,62 @@
 #!/usr/bin/python2.7
 
 from subprocess import check_output, STDOUT, CalledProcessError, call
-from sys import argv, stdout, stdin
-import fileinput
+from sys import argv
+from tempfile import mkstemp
+import os
 
 def run(func):
-	if type(func) != type([]) and type(func) == type(""):
-		func = func.split(' ')
+    if type(func) != list and type(func) == str:
+        func = func.split(' ')
 
-	try:
-		out = check_output(func, stderr=STDOUT)[:-1]
-	except CalledProcessError as o:
-		out = o.output[:-1]
-	
-	return out
+    try:
+        out = check_output(func, stderr=STDOUT)[:-1]
+    except CalledProcessError as o:
+        out = o.output[:-1]
+    
+    return out
 
 ls = run('tmux ls')
 
-if len(argv) == 1 and 'windows' in ls:
-	print ls
-	exit()
-
-names = [i.split(":")[0]for i in ls.split("\n")]
+names = [i.split(':')[0]for i in ls.split('\n')]
+auto = False
 
 if len(argv) == 1:
-	argv = ['tt', '0']
+    argv = ['tt', '0']
+    auto = True
 
+inp = mkstemp('w')
+out = mkstemp('w')
+
+if 'windows' in ls:
+    if not auto:
+        os.write(inp[0], '{}: To be created\n'.format(argv[1]))
+
+    os.write(inp[0], ls)
+else:
+    os.write(inp[0], '{}: To be created\n'.format(argv[1]))
+
+os.fsync(inp[0])
+
+index = 0
 if argv[1] in names:
-	call(['tmux', 'attach', '-t', argv[1]])
-	exit()
+    index = names.index(argv[1])
 
-response = ''
-while response != 'y':
-	if not 'windows' in ls:
-		out = 'no sessions, create one called "%s"? (y/n) '
-	else:
-		out = 'session "%s" does not exist, create it? (y/n) '
-	stdout.write(out % argv[1])
-	response = stdin.readline()[:-1].lower()
-	if response == 'y':
-		call(['tmux', 'new-session', '-s', argv[1]])
-	elif response == 'n':
-		exit()
+p = call(['percol', '--initial-index', str(index), inp[1]], stdout=out[0])
+
+os.close(inp[0])
+os.close(out[0])
+os.remove(inp[1])
+
+session = open(out[1]).read().split(':')[0]
+
+os.remove(out[1])
+
+if not session:
+    print 'no session selected'
+    exit()
+
+if session not in names:
+    call(['tmux', 'new-session', '-s', session])
+else:
+    call(['tmux', 'attach-session', '-t', session])
