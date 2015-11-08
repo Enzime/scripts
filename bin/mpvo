@@ -1,0 +1,57 @@
+#!/bin/python3
+
+import os
+import subprocess
+import sys
+import tempfile
+
+files = []
+
+def absPath(path):
+    return os.path.abspath(os.path.expanduser(path))
+
+def verifyMimetype(path):
+    return subprocess.check_output(['file', '--mime-type', '-Lb', fp]).decode('utf-8')[:-1].split('/')[0] in ('audio', 'video')
+
+sys.argv.pop(0)
+
+if not len(sys.argv):
+    sys.argv.append('.')
+
+d = i = False
+
+for arg in sys.argv:
+    if os.path.isfile(arg):
+        d = os.path.dirname(absPath(arg))
+        if not i:
+            i = absPath(arg)
+
+    if os.path.isdir(arg):
+        d = arg
+
+    if not d:
+        raise Exception()
+
+    if not os.path.isabs(d):
+        d = absPath(d)
+
+    for f in os.listdir(d):
+        fp = '{}/{}'.format(d, f)
+        if os.path.isfile(fp):
+            if verifyMimetype(fp):
+                if not i:
+                    i = fp
+                files.append(fp)
+
+if not i:
+    raise Exception()
+
+temp = tempfile.NamedTemporaryFile(mode='w', delete=False)
+temp.file.write('\n'.join(files))
+temp.close()
+
+args = ['mpv', '--playlist-pos', str(files.index(i)), '--playlist', temp.name]
+
+subprocess.call(args)
+open('/home/comkid/test', 'a').write('aaaaaa\n')
+os.remove(temp.name)
