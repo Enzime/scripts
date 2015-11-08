@@ -29,7 +29,7 @@ inp = mkstemp('w')
 out = mkstemp('w')
 
 if 'windows' in ls:
-    if not auto:
+    if not auto and argv[1] not in names:
         os.write(inp[0], '{}: To be created\n'.format(argv[1]))
 
     os.write(inp[0], ls)
