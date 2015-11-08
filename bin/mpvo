@@ -35,7 +35,7 @@ for arg in sys.argv:
     if not os.path.isabs(d):
         d = absPath(d)
 
-    for f in os.listdir(d):
+    for f in sorted(os.listdir(d)):
         fp = '{}/{}'.format(d, f)
         if os.path.isfile(fp):
             if verifyMimetype(fp):
@@ -53,5 +53,4 @@ temp.close()
 args = ['mpv', '--playlist-pos', str(files.index(i)), '--playlist', temp.name]
 
 subprocess.call(args)
-open('/home/comkid/test', 'a').write('aaaaaa\n')
 os.remove(temp.name)
