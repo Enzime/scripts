@@ -2,23 +2,23 @@
 
 file=/data/Pictures/Screenshots/$(date +%y-%m-%d_%H-%M-%S).png
 : ${site:=b.miserable.ninja}
-regex='(https?|ftp)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'
+regex="^(https?|ftp)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]$"
 
 if [[ "$1" == "desktop" ]]; then
 	maim $file
 elif [[ "$1" == "current" ]]; then
-	# maim -i $(xdotool getactivewindow) $file
-	maim -i $(xwininfo -id $(xwininfo -id $(xdotool getactivewindow) -children | grep "Parent window id" | sed -r "s/.*: (0x[0-9a-f]+) .*/\1/") | sed -r "s/.*: (0x[0-9a-f]+) .*/\1/" | head -n2 | tail -n1) -g $(xwininfo -id $(xwininfo -id $(xdotool getactivewindow) -children | grep "Parent window id" | sed -r "s/.*: (0x[0-9a-f]+) .*/\1/") | tail -n3 | head -n2 | py -l 'list(map(str.split,l))[1][1].replace("-","+").split("+")[0]+list(map(str.split,l))[0][1]') $file
+	maim -i $(xdotool getactivewindow) $file
+	# maim -i $(xwininfo -id $(xwininfo -id $(xdotool getactivewindow) -children | grep "Parent window id" | sed -r "s/.*: (0x[0-9a-f]+) .*/\1/") | sed -r "s/.*: (0x[0-9a-f]+) .*/\1/" | head -n2 | tail -n1) -g $(xwininfo -id $(xwininfo -id $(xdotool getactivewindow) -children | grep "Parent window id" | sed -r "s/.*: (0x[0-9a-f]+) .*/\1/") | tail -n3 | head -n2 | py -l 'list(map(str.split,l))[1][1].replace("-","+").split("+")[0]+list(map(str.split,l))[0][1]') $file
 else
 	maim -s $file
 fi
 
 if [ -f $file ]; then
-	url=$($site $file -q)
+	url=$($site $file)
 
-	if [[ $url =~ $regex ]]; then
-		echo $url | xclip -selection clipboard
-		firefox $url
+	if [[ "$url" =~ $regex ]]; then
+		echo -n $url | xclip -selection clipboard
+		firefox "$url"
 	else
 		echo Failed to upload clipboard
 	fi
