@@ -12,6 +12,7 @@
 !/bin/ranger-file-selector
 !/bin/ranger-folder-selector
 !/bin/shotup
+!/bin/slep
 !/bin/tt
 !/bin/virtualbox-launcher
 !/.gitignore.d
