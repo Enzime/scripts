@@ -13,5 +13,6 @@
 !/bin/ranger-folder-selector
 !/bin/shotup
 !/bin/tt
+!/bin/virtualbox-launcher
 !/.gitignore.d
 !/.gitignore.d/scripts
