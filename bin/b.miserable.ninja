@@ -1,8 +1,12 @@
 #!/bin/bash
 
-API_KEY=""
+source ~/.api_keys
 
-if [ -z "$1" ]
+if [ -z "$BMISERABLENINJA_API_KEY" ]
+then
+    echo "Add 'export BMISERABLENINJA_API_KEY=\"apiKeyHere\"' to ~/.api_keys"
+    exit 1
+elif [ -z "$1" ]
 then
   echo "Specify a file to be uploaded"
   exit 2
@@ -12,9 +16,4 @@ then
   exit 3
 fi
 
-if [[ "$2" == "-q" ]]
-then
-	curl "http://b.miserable.ninja/up/" -# -F "api_key=$API_KEY" -F "q=q" -F "f=@$1"
-else
-	curl "http://b.miserable.ninja/up/" -# -F "api_key=$API_KEY" -F "q=q" -F "f=@$1" | sed -E 's/^.+,(.+),.+,.+$/\1\n/'
-fi
+curl "http://b.miserable.ninja/up/" -# -F "api_key=$BMISERABLENINJA_API_KEY" -F "q=q" -F "f=@$1"

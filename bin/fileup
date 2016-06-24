@@ -2,15 +2,16 @@
 
 file=$(file-chooser)
 : ${site:=b.miserable.ninja}
-regex='(https?|ftp)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'
+regex="^(https?|ftp)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]$"
 
 if [ -n "$file" ]; then
 	if [ -f "$file" ]; then
 		url=$($site "$file" -q)
+
 		if [[ "$url" =~ $regex ]]; then
-			echo $url | xclip -selection clipboard
+			echo -n $url | xclip -selection clipboard
 			echo $url
-			firefox $url
+			firefox "$url"
 		else
 			echo Failed to upload
 		fi
