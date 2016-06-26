@@ -8,6 +8,7 @@
 !/bin/i3-ws
 !/bin/kbdctl
 !/bin/mpvo
+!/bin/passmenu
 !/bin/puu.sh
 !/bin/ranger-file-selector
 !/bin/ranger-folder-selector
