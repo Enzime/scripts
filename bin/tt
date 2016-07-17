@@ -42,7 +42,7 @@ index = 0
 if argv[1] in names:
     index = names.index(argv[1])
 
-p = call(['percol', '--initial-index', str(index), inp[1]], stdout=out[0])
+p = call(['peco', '--initial-index', str(index), inp[1]], stdout=out[0])
 
 os.close(inp[0])
 os.close(out[0])
