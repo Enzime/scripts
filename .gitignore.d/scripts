@@ -15,6 +15,7 @@
 !/bin/shotup
 !/bin/slep
 !/bin/tt
+!/bin/tvim
 !/bin/virtualbox-launcher
 !/.gitignore.d
 !/.gitignore.d/scripts

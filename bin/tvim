@@ -1,0 +1,7 @@
+#!/bin/zsh
+if [[ "$1" == "--floating" ]]; then
+    termite --name floating -e "vim ${@:2}"
+else
+    termite -e "vim $@"
+fi
+
