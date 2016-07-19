@@ -1,9 +1,10 @@
 #!/bin/zsh
 
 if [[ $1 = 8 ]]; then
-    btn="Hyper_L"
+    btns=( Super_L )
 elif [[ $1 = 9 ]]; then
-    btn="Super_L"
+    # functionality of Hyper_L
+    btns=( Alt_L )
 else
     echo "Not implemented for this button"
     exit 1
@@ -13,11 +14,14 @@ cmd="xinput --query-state 'Kingsis Peripherals ZOWIE Gaming mouse' | grep '\[$1\
 state=$(eval $cmd)
 
 while [[ $state = "down" ]]; do
-  echo $state $btn
+  echo $state $btns
   state=$(eval $cmd)
   sleep 0.01
 done
 
-echo $state $btn
+echo $state $btns
 
-xte 'keyup '$btn''
+for btn in $btns; do
+    xte 'keyup '$btn''
+    echo keyup $btn
+done
