@@ -17,5 +17,6 @@
 !/bin/tt
 !/bin/tvim
 !/bin/virtualbox-launcher
+!/bin/watch-mouse
 !/.gitignore.d
 !/.gitignore.d/scripts
