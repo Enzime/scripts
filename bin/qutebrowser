@@ -1,0 +1,32 @@
+#!/bin/python3
+
+import os
+import subprocess
+import sys
+
+
+DEFAULT = os.path.expanduser('~/.config/qutebrowser/default')
+
+running = not subprocess.call('ps u -u {} | grep [/]usr/bin/qutebrowser >/dev/null'.format(os.environ['USER']), shell=True)
+
+args = ['/usr/bin/qutebrowser'] + sys.argv[1:]
+
+# If no instances of qutebrowser
+# Start default profile
+if not running:
+    if '--basedir' not in args:
+        args.append('--basedir')
+
+    idx = args.index('--basedir')
+    if len(args) == idx + 1:
+        args.append(DEFAULT)
+    elif not os.path.isdir(args[idx + 1]):
+        args[idx + 1] = DEFAULT
+
+print(args)
+print(' '.join(args))
+
+subprocess.call(args)
+
+# TODO: DETECT CURRENTLY RUNNING PROFILE.
+
