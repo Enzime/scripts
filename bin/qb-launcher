@@ -3,7 +3,9 @@
 profile=$(find ~/.config/qutebrowser -mindepth 1 -maxdepth 1 '!' -name base -type d -printf '%P\n' | rofi -dmenu -p "profile: ")
 
 if [[ -n $profile ]]; then
-    if [[ -d ~/.config/qutebrowser/$profile ]]; then
+    if [[ $profile = "dev" ]]; then
+        qutebrowser-dev --basedir ~/.config/qutebrowser/dev &
+    elif [[ -d ~/.config/qutebrowser/$profile ]]; then
         qutebrowser --basedir ~/.config/qutebrowser/$profile &
     else
         echo "Profile $profile does not exist, please create it"
