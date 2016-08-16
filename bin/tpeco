@@ -1,0 +1,18 @@
+#!/bin/zsh
+
+TMPIN=$(mktemp)
+TMPOUT=$(mktemp)
+rm $TMPIN $TMPOUT
+mkfifo $TMPIN
+mkfifo $TMPOUT
+cat >$TMPIN &
+
+if [[ "$1" == "--floating" ]]; then
+    termite --name floating -e "zsh -c 'peco ${@:2} 0<$TMPIN | cat >$TMPOUT'" &
+elif [[ "$1" == "--fullscreen" ]]; then
+    termite --name fullscreen -e "zsh -c 'peco ${@:2} 0<$TMPIN | cat >$TMPOUT'" &
+else
+    termite -e "zsh -c 'peco $@ 0<$TMPIN | cat >$TMPOUT'" &
+fi
+
+cat <$TMPOUT
