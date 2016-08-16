@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-profile=$(find ~/.config/qutebrowser -mindepth 1 -maxdepth 1 '!' -name base -type d -printf '%P\n' | rofi -dmenu -p "profile: ")
+profile=$(find ~/.config/qutebrowser -mindepth 1 -maxdepth 1 '!' -name base -type d -printf '%P\n' | rofi -dmenu -i -p "profile: ")
 
 if [[ -n $profile ]]; then
     if [[ $profile = "dev" ]]; then

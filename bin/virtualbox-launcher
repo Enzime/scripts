@@ -1,6 +1,6 @@
 #!/bin/bash
 
-vm=$(VBoxManage list vms | egrep '"(.*)"' --only-matching | cut -d '"' -f 2 | rofi -dmenu -p "VM: ")
+vm=$(VBoxManage list vms | egrep '"(.*)"' --only-matching | cut -d '"' -f 2 | rofi -dmenu -p -i "VM: ")
 
 if [ -n "$vm" ]; then
 	VBoxManage startvm "$vm"
