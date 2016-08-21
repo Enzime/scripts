@@ -1,12 +1,14 @@
 #!/bin/zsh
 
-profile=$(find ~/.config/qutebrowser -mindepth 1 -maxdepth 1 '!' -name base -type d -printf '%P\n' | rofi -dmenu -i -p "profile: ")
+profile=$(find ~/.config/qutebrowser -mindepth 1 -maxdepth 1 '!' -name base -type d -printf '%P\n' | tpeco --fullscreen)
 
 if [[ -n $profile ]]; then
     if [[ $profile = "dev" ]]; then
-        qutebrowser-dev --basedir ~/.config/qutebrowser/dev &
+        qutebrowser-dev --basedir ~/.config/qutebrowser/dev $@ &
+    elif [[ $profile = "dev-webengine" ]]; then
+        qutebrowser-dev --basedir ~/.config/qutebrowser/dev-webengine --backend webengine $@ &
     elif [[ -d ~/.config/qutebrowser/$profile ]]; then
-        qutebrowser --basedir ~/.config/qutebrowser/$profile &
+        qutebrowser --basedir ~/.config/qutebrowser/$profile $@ &
     else
         echo "Profile $profile does not exist, please create it"
     fi
