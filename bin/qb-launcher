@@ -8,7 +8,7 @@ if [[ -n $profile ]]; then
     elif [[ $profile = "dev-webengine" ]]; then
         qutebrowser-dev --basedir ~/.config/qutebrowser/dev-webengine --backend webengine $@ &
     elif [[ -d ~/.config/qutebrowser/$profile ]]; then
-        qutebrowser --basedir ~/.config/qutebrowser/$profile $@ &
+        qutebrowser --basedir ~/.config/qutebrowser/$profile --backend webengine $@ &
     else
         echo "Profile $profile does not exist, please create it"
     fi
