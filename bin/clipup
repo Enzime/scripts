@@ -19,7 +19,7 @@ else
 
 	if [[ $url =~ $regex ]]; then
 		echo $url | xclip -selection clipboard
-		firefox $url
+		xdg-open $url
 	else
 		echo Failed to upload clipboard
 	fi

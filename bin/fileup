@@ -11,7 +11,7 @@ if [ -n "$file" ]; then
 		if [[ "$url" =~ $regex ]]; then
 			echo -n $url | xclip -selection clipboard
 			echo $url
-			firefox "$url"
+			xdg-open "$url"
 		else
 			echo Failed to upload
 		fi
