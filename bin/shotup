@@ -1,7 +1,7 @@
 #!/bin/bash
 
 file=/data/Pictures/Screenshots/$(date +%y-%m-%d_%H-%M-%S).png
-: ${site:=b.miserable.ninja}
+: ${site:=puu.sh}
 regex="^(https?|ftp)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]$"
 
 if [[ "$1" == "desktop" ]]; then
