@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 
 profile=$(find ~/.config/qutebrowser -mindepth 1 -maxdepth 1 '!' -name base -type d -printf '%P\n' | tpeco --fullscreen)
 

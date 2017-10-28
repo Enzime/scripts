@@ -8,7 +8,6 @@ if [[ "$1" == "desktop" ]]; then
 	maim $file
 elif [[ "$1" == "current" ]]; then
 	maim -i $(xdotool getactivewindow) $file
-	# maim -i $(xwininfo -id $(xwininfo -id $(xdotool getactivewindow) -children | grep "Parent window id" | sed -r "s/.*: (0x[0-9a-f]+) .*/\1/") | sed -r "s/.*: (0x[0-9a-f]+) .*/\1/" | head -n2 | tail -n1) -g $(xwininfo -id $(xwininfo -id $(xdotool getactivewindow) -children | grep "Parent window id" | sed -r "s/.*: (0x[0-9a-f]+) .*/\1/") | tail -n3 | head -n2 | py -l 'list(map(str.split,l))[1][1].replace("-","+").split("+")[0]+list(map(str.split,l))[0][1]') $file
 else
 	maim -s $file
 fi
@@ -16,10 +15,12 @@ fi
 if [ -f $file ]; then
 	url=$($site $file)
 
+	filename=$(basename $file)
+
 	if [[ "$url" =~ $regex ]]; then
 		echo -n $url | xclip -selection clipboard
-		xdg-open "$url"
+		notify-send -i $file $filename "Uploaded successfully"
 	else
-		echo Failed to upload clipboard
+		notify-send -i $file $filename "Failed to upload"
 	fi
 fi
